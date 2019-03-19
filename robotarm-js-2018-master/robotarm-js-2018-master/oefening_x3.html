@@ -1,0 +1,101 @@
+<html>
+    <body>
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <script src="./robot-arm.js"></script>
+        <script>
+            // Robotarm bibliotheek inladen
+            var canvas = document.getElementById("canvas");
+            var robotArm = new RobotArm(canvas);
+
+            // Het level inladen
+            robotArm.loadLevel("exercise 11")
+            robotArm.speed = 1000;
+            // Jou instructies volgen hier
+            function RobotMover(direction, places) {
+              for (var i = 0; i < places; i++) {
+                if (direction =='left') {
+                  robotArm.moveLeft();} else {
+                  robotArm.moveRight();}}
+                }
+let amountOfRed = 0;
+let amountOfBlue = 0;
+let amountOfGreen = 0;
+let amountOfWhite = 0;
+let most = 0;
+let mostColor = "";
+
+                function ColorAdder(){
+                  switch(color) {
+                      case 'white':
+                      amountOfWhite++;
+                      break;
+                      case 'blue':
+                      amountOfBlue++;
+                      break;
+                      case 'green':
+                      amountOfGreen++;
+                      break;
+                      case 'red':
+                      amountOfRed++;
+                      break;
+                      default:
+                      break;
+
+                  }
+                }
+
+                function ScanColor(){
+                  robotArm.grab();
+                  color= robotArm.scan();
+                  ColorAdder();
+                  robotArm.drop();
+                }
+
+                function Scanner(){
+                  RobotMover('right', 1);
+                  ScanColor();
+                }
+                function CollectColor(){
+                  for (var i = 1; i < 10; i++) {
+
+                  RobotMover('right', 1);
+                  robotArm.grab();
+                  color = robotArm.scan();
+                  if (color == mostColor) {
+                    RobotMover('left', i);
+                    robotArm.drop();
+                    RobotMover('right', i);
+
+                  }else{
+                    robotArm.drop();
+                  }
+                }
+                }
+
+                for (var i = 0; i < 9; i++) {
+                  Scanner();
+                  if (amountOfRed > most) {
+                    most = amountOfRed;
+                    mostColor = 'red';
+                  }
+                  if (amountOfBlue > most) {
+                    most = amountOfBlue;
+                    mostColor = 'blue';
+
+                  }
+                  if (amountOfGreen > most) {
+                    most = amountOfGreen;
+                    mostColor ='green';
+
+                  }
+                  if (amountOfWhite > most) {
+                    most = amountOfWhite;
+                    mostColor = "white";
+                  }}
+                  RobotMover('left', 9);
+                  CollectColor();
+            // De door jou opgegeven instructies uitvoeren
+            robotArm.run();
+        </script>
+    </body>
+</html>
